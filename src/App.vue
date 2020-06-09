@@ -1,5 +1,5 @@
 <template>
-  <div id="app" dir="rtl">
+  <div id="app">
     <EyeMap v-if="login" id="eyeMap" :Sensors="sensors" :MapCenter="mapCenter" style="height: 600px; width: 50%"/>
     <Login v-if="!login" @click.native="handleLogin"/>
   </div>
