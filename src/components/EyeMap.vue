@@ -14,7 +14,7 @@
       @update:zoom="zoomUpdate"
     >
       <l-tile-layer
-          v-for="tileProvider in getTileProviders"
+        v-for="tileProvider in getTileProviders"
         :key="tileProvider.name"
         :name="tileProvider.name"
         :visible="tileProvider.visible"
@@ -66,7 +66,7 @@
   >
     <v-btn
     v-for="polygon in polygons"
-    :id="`polygon${sensor.id}Btn`"
+    :id="`polygon${polygon.id}Btn`"
     @click="selectPolygon(polygon.id)"
     :key="polygon.id">
       <span>{{polygon.text}}</span>
