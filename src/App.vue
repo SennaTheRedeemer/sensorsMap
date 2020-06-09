@@ -1,26 +1,33 @@
 <template>
-  <div id="app">
-    <EyeMap id="eyeMap" :Sensors="sensors" :MapCenter="mapCenter" style="height: 600px; width: 50%"/>
+  <div id="app" dir="rtl">
+    <EyeMap v-if="login" id="eyeMap" :Sensors="sensors" :MapCenter="mapCenter" style="height: 600px; width: 50%"/>
+    <Login v-if="!login" @click.native="handleLogin"/>
   </div>
 </template>
 
 <script>
 import EyeMap from './components/EyeMap'
+import Login from './views/Login'
 
 const sensorTypes = {
 PLANE: 0,
 SATELLITE: 1,
 CAMERA: 2,
 }
-
 export default {
   name: 'App',
   components: {
-    EyeMap
+    EyeMap,
+    Login
+  },
+  methods: {
+    handleLogin: function() {
+      this.login = true;
+    }
   },
   data: () => {
     return {
-      
+      login: false,
       sensors: [
         {
           lat: 32.109333,
@@ -63,6 +70,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

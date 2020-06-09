@@ -74,13 +74,8 @@
   </v-bottom-navigation>
   <v-bottom-navigation>
     <v-row>
-      <v-col class='col-4'>
-        <v-btn
-        id="gotoPointBtn"
-        @click="gotoPoint()">
-          <span>עבור לנ.צ</span>
-        </v-btn>
-      </v-col>
+    <v-col class='col-1'>
+    </v-col>
       <v-col class='col-3'>
     <v-text-field
       id="latitudeTextField"
@@ -99,6 +94,13 @@
       v-model="chosenLng"
     >
     </v-text-field>
+      </v-col>
+      <v-col class='col-4'>
+        <v-btn
+        id="gotoPointBtn"
+        @click="gotoPoint()">
+          <span>עבור לנ.צ</span>
+        </v-btn>
       </v-col>
     </v-row>
     </v-bottom-navigation>
