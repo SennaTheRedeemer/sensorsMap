@@ -45,6 +45,7 @@
                     name="Username"
                     prepend-icon="mdi-account"
                     type="text"
+                    v-model="militaryID"
                   ></v-text-field>
 
                   <v-text-field
@@ -53,6 +54,7 @@
                     name="password"
                     prepend-icon="mdi-lock"
                     type="password"
+                    v-model="password"
                   ></v-text-field>
                   <v-overflow-btn
                     :items="domains"
@@ -60,6 +62,7 @@
                     label="בחר דומיין"
                     editable
                     item-value="text"
+                    v-model="domain"
                   ></v-overflow-btn>
                 </v-form>
               </v-card-text>
@@ -76,12 +79,16 @@
 </template>
 
 <script>
+  import axios from 'axios';
   export default {
     props: {
       source: String,
     },
     data: () => {
       return {
+        militaryID: undefined,
+        password: undefined,
+        domain: undefined,
         domains: [
           'Retina',
           'Iris',
@@ -91,9 +98,16 @@
     },
     methods: {
       login: function() {
-        
-        this.$emit('finishLogin')
-      }
+        axios.get(`https://11.1.1.39:8443/${this.militaryID}/${this.password}`).then(response => 
+          {
+            //if(response.data){
+              this.$emit('finishLogin')
+            //}
+            // else{
+            //     alert('לא נכון')
+            // }
+          }
+        )}
     }
   }
 </script>

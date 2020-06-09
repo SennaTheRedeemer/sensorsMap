@@ -3,6 +3,7 @@ import 'leaflet/dist/leaflet.css';
 import App from './App.vue'
 import vuetify from './plugins/vuetify';
 
+
 Vue.config.productionTip = false
 
 delete L.Icon.Default.prototype._getIconUrl;
