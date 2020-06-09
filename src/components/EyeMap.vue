@@ -157,7 +157,7 @@ data() {
   return {
     dataMapCenter: this.MapCenter,
     mapKey: 0,
-    zoom: 13,
+    zoom: 7,
     attribution:
       '© - Ofir Bar Yacov Norani',
     currentZoom: 11.5,
@@ -276,6 +276,7 @@ methods: {
     else {
       this.dataMapCenter.MapCenterLat = this.chosenLat;
       this.dataMapCenter.MapCenterLng = this.chosenLng;
+      this.zoom = 13
       this.mapKey++;
     }
   },
