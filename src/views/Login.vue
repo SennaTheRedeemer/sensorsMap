@@ -98,14 +98,14 @@
     },
     methods: {
       login: function() {
-        axios.get(`https://11.1.1.39:8443/${this.militaryID}/${this.password}`).then(response => 
+        axios.get(`https://11.1.1.39:8443/${this.militaryID}/${this.password}/${this.domain}`).then(response => 
           {
-            //if(response.data){
+            if(response.data){
               this.$emit('finishLogin')
-            //}
-            // else{
-            //     alert('לא נכון')
-            // }
+            }
+             else{
+                 alert('לא נכון')
+             }
           }
         )}
     }
