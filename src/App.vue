@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <EyeMap v-if="login" id="eyeMap" :Sensors="sensors" :MapCenter="mapCenter" style="height: 600px; width: 50%"/>
-    <Login v-if="!login" @click.native="handleLogin"/>
+    <Login @finishLogin="login = true" v-if="!login" />
   </div>
 </template>
 

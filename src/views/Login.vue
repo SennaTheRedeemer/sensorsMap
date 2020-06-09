@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app id="inspire" dir="rtl">
     <v-content>
       <v-container
         class="fill-height"
@@ -40,7 +40,8 @@
               <v-card-text>
                 <v-form>
                   <v-text-field
-                    label="שם משתמש"
+                    label="מספר אישי"
+                    hint="לדוגמא s9999999"
                     name="Username"
                     prepend-icon="mdi-account"
                     type="text"
@@ -53,11 +54,18 @@
                     prepend-icon="mdi-lock"
                     type="password"
                   ></v-text-field>
+                  <v-overflow-btn
+                    :items="domains"
+                    prepend-icon="mdi-server"
+                    label="בחר דומיין"
+                    editable
+                    item-value="text"
+                  ></v-overflow-btn>
                 </v-form>
               </v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary">התחבר</v-btn>
+                <v-btn color="primary" @click="login">התחבר</v-btn>
               </v-card-actions>
             </v-card>
           </v-col>
@@ -72,7 +80,19 @@
     props: {
       source: String,
     },
+    data: () => {
+      return {
+        domains: [
+          'Retina',
+          'Iris',
+          'Dev'
+        ]
+      }
+    },
     methods: {
+      login: function() {
+        this.$emit('finishLogin')
+      }
     }
   }
 </script>
