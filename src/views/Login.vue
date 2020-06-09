@@ -91,6 +91,7 @@
     },
     methods: {
       login: function() {
+        
         this.$emit('finishLogin')
       }
     }

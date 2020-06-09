@@ -285,7 +285,6 @@ methods: {
       provider.visible = !provider.visible
     })
     this.showTopoMap = !this.showTopoMap
-    this.mapKey++;
   },
   selectPolygon(id){
     this.selectedPolygon === id ? this.selectedPolygon = undefined : this.selectedPolygon = id;
