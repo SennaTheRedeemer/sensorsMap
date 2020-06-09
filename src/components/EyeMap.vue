@@ -23,6 +23,7 @@
       />
       <l-control class="example-custom-control">
         <v-btn
+        id="switchMapBtn"
         @click="switchMap()">
           <span>{{switchMapBtnText}}</span>
         </v-btn>
@@ -47,6 +48,7 @@
       v-for="sensor in Sensors"
       :key="sensor.id"
       ref="markersRef"
+      :id="`sensor-${sensor.id}`"
       :icon="getIcon(sensor.active, sensor.type)"
       :lat-lng="getLatLng(sensor.lat, sensor.lng)"
       @click="emitSensorClick(sensor)"
@@ -64,6 +66,7 @@
   >
     <v-btn
     v-for="polygon in polygons"
+    :id="`polygon${sensor.id}Btn`"
     @click="selectPolygon(polygon.id)"
     :key="polygon.id">
       <span>{{polygon.text}}</span>
@@ -73,12 +76,14 @@
     <v-row>
       <v-col class='col-4'>
         <v-btn
+        id="gotoPointBtn"
         @click="gotoPoint()">
           <span>עבור לנ.צ</span>
         </v-btn>
       </v-col>
       <v-col class='col-3'>
     <v-text-field
+      id="latitudeTextField"
       label="קו רוחב"
       placeholder="מלא קו רוחב"
       dense
@@ -87,6 +92,7 @@
       </v-col>
       <v-col class='col-3'>
     <v-text-field
+      id="longitudeTextField"
       label="קו אורך"
       placeholder="מלא קו אורך"
       dense

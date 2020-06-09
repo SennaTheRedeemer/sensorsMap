@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <EyeMap :Sensors="sensors" :MapCenter="mapCenter" style="height: 600px; width: 50%"/>
+    <EyeMap id="eyeMap" :Sensors="sensors" :MapCenter="mapCenter" style="height: 600px; width: 50%"/>
   </div>
 </template>
 
