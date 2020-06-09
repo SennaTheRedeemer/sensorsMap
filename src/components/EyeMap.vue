@@ -271,7 +271,7 @@ methods: {
   },
   gotoPoint() {
     if(isNaN(this.chosenLat) || isNaN(this.chosenLng)) {
-      alert('אתה אידיוט')
+      alert('חובה למלא רק מספרים.')
     }
     else {
       this.dataMapCenter.MapCenterLat = this.chosenLat;
