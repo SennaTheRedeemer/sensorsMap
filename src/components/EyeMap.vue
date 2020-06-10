@@ -131,20 +131,22 @@
           שמור מקום חדש
         </v-card-title>
         <v-card-actions class="justify-center">
-          <v-text-field
-            
-            id="newPlaceName"
-            placeholder="שם מקום שמור"
-            dense
-            v-model="newPlaceName"
-          >
-          </v-text-field>
+          <v-form ref="form">
+            <v-text-field
+              id="newPlaceName"
+              placeholder="שם מקום שמור"
+              dense
+              v-model="newPlaceName"
+            >
+            </v-text-field>
+          </v-form>
         </v-card-actions>
         <v-divider></v-divider>
 
         <v-card-actions>
           <v-spacer></v-spacer>
           <v-btn
+            id="acceptSaveLocationThatLovesEyalBenedek"
             color="primary"
             text
             @click="saveDetails"
@@ -360,7 +362,8 @@ methods: {
       }
     })
         this.$alertify.success('המקום נשמר בהצלחה');
-    this.dialog = false;
+        this.$refs.form.reset()
+        this.dialog = false;
   },
   saveFavorite() {
     if(isNaN(this.chosenLat) || isNaN(this.chosenLng)) {
