@@ -79,6 +79,7 @@
       v-model="favoritePlaceSelected"
       :items="savedLocationsNames"
       dense
+      style="z-index:9999;"
       label="מקומות שמורים"
       @change="gotoFavoritePlace(favoritePlaceSelected)"
     ></v-autocomplete>
@@ -123,7 +124,7 @@
       v-model="dialog"
       width="500"
     >
-      <v-card dir="rtl">
+      <v-card dir="rtl" class="justify-center">
         <v-card-title
           class="headline grey lighten-2"
           primary-title
@@ -131,7 +132,7 @@
           שמור מקום חדש
         </v-card-title>
         <v-card-actions class="justify-center">
-          <v-form ref="form">
+          <v-form ref="form" @submit.prevent>
             <v-text-field
               id="newPlaceName"
               placeholder="שם מקום שמור"
@@ -354,16 +355,24 @@ computed: {
 },
 methods: {
   saveDetails() {
-    this.savedLocations.push({
+    if(this.newPlaceName === undefined ||
+        this.newPlaceName === "" || 
+        this.savedLocationsNames.includes(this.newPlaceName)) {
+        this.$alertify.error('שם המקום קיים או אינו תקין');
+    }
+    else {
+      this.savedLocations.push({
       name: this.newPlaceName,
       location: {
-        lat: this.chosenLat,
-        lng: this.chosenLng
-      }
-    })
+                    lat: this.chosenLat,
+                    lng: this.chosenLng
+                  }
+                })
         this.$alertify.success('המקום נשמר בהצלחה');
         this.$refs.form.reset()
         this.dialog = false;
+    }
+    
   },
   saveFavorite() {
     if(isNaN(this.chosenLat) || isNaN(this.chosenLng)) {

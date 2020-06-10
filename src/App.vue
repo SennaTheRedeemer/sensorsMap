@@ -1,7 +1,7 @@
 <template>
   <div id="app" data-app>
     <EyeMap v-if="login" id="eyeMap" :Sensors="sensors" :MapCenter="mapCenter" style="height: 600px; width: 50%"/>
-    <Login @finishLogin="login = true" v-if="!login" />
+    <Login :url="'https://11.1.1.39'" :port="8443" @finishLogin="login = true" v-if="!login" />
   </div>
 </template>
 

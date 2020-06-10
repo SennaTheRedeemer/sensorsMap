@@ -84,6 +84,8 @@
   export default {
     props: {
       source: String,
+      url: String,
+      port: Number
     },
     data: () => {
       return {
@@ -99,7 +101,7 @@
     },
     methods: {
       login: function() {
-        // axios.get(`https://11.1.1.39:8443/${this.militaryID}/${this.password}/${this.domain}`).then(response => 
+        // axios.get(`${this.url}:${this.port}/${this.militaryID}/${this.password}/${this.domain}`).then(response => 
         //   {
         //     if(response.data){
               this.$emit('finishLogin')
