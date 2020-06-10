@@ -120,7 +120,7 @@
     </v-row>
     </v-bottom-navigation>
     <v-dialog
-      style="z-index:9999;"
+      style="z-index:9999; position: relative;"
       v-model="dialog"
       width="500"
     >
