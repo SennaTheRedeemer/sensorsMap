@@ -29,16 +29,19 @@
         </v-btn>
       </l-control>
       <l-polygon
+        id="southPolygon"
         :lat-lngs="southPolygon.latlngs"
         :color="southPolygon.color"
         v-if="selectedPolygon === southID"
       />
       <l-polygon
+        id="centerPolygon"
         :lat-lngs="centerPolygon.latlngs"
         :color="centerPolygon.color"
         v-if="selectedPolygon === centerID"
       />
       <l-polygon
+        id="northPolygon"
         :lat-lngs="northPolygon.latlngs"
         :color="northPolygon.color"
         v-if="selectedPolygon === northID"
@@ -54,7 +57,7 @@
       @click="emitSensorClick(sensor)"
       >
         <l-tooltip>
-          <div >
+          <div>
             {{sensor.text}}
           </div>
         </l-tooltip>
@@ -71,6 +74,14 @@
     :key="polygon.id">
       <span>{{polygon.text}}</span>
     </v-btn>
+
+    <v-autocomplete
+      v-model="favoritePlaceSelected"
+      :items="savedLocationsNames"
+      dense
+      label="מקומות שמורים"
+      @change="gotoFavoritePlace(favoritePlaceSelected)"
+    ></v-autocomplete>
   </v-bottom-navigation>
   <v-bottom-navigation>
     <v-row>
@@ -100,8 +111,49 @@
       v-model="chosenLat"
     ></v-text-field>
       </v-col>
+      <v-col class="col-2">
+        <v-btn icon id="saveFavorite" @click="saveFavorite">
+          <v-icon>mdi-content-save</v-icon>
+        </v-btn>
+      </v-col>
     </v-row>
     </v-bottom-navigation>
+    <v-dialog
+      style="z-index:9999;"
+      v-model="dialog"
+      width="500"
+    >
+      <v-card dir="rtl">
+        <v-card-title
+          class="headline grey lighten-2"
+          primary-title
+        >
+          שמור מקום חדש
+        </v-card-title>
+        <v-card-actions class="justify-center">
+          <v-text-field
+            
+            id="newPlaceName"
+            placeholder="שם מקום שמור"
+            dense
+            v-model="newPlaceName"
+          >
+          </v-text-field>
+        </v-card-actions>
+        <v-divider></v-divider>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn
+            color="primary"
+            text
+            @click="saveDetails"
+          >
+            שמור
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -155,6 +207,9 @@ props: {
 },
 data() {
   return {
+    newPlaceName: undefined,
+    dialog: false,
+    favoritePlaceSelected: undefined,
     dataMapCenter: this.MapCenter,
     mapKey: 0,
     zoom: 7,
@@ -172,6 +227,22 @@ data() {
       lat: 29.3204893,
       lng: 32.5077242
     },
+    savedLocations: [
+      {
+        name: "אשדוד",
+        location: {
+          lat: 31.7701779,
+          lng: 34.6350122
+        },
+      },
+      {
+        name: "איזור התחממות תל אביב",
+        location: {
+          lat: 32.0880577,
+          lng: 34.8672865
+        }
+      }
+    ],
     northEastBounds: {
       lat: 33.4869697,
       lng: 37.0066256
@@ -180,15 +251,27 @@ data() {
     polygons: [
       {
         id: areas.SOUTH,
-        text: 'מחוז דרום'
+        text: 'מחוז דרום',
+        location: {
+          lat: 31.7701779,
+          lng: 34.6350122
+        }
       },
       {
         id: areas.CENTER,
-        text: 'מחוז מרכז'
+        text: 'מחוז מרכז',
+        location: {
+          lat: 32.0880577,
+          lng: 34.8672865
+        }
       },
       {
         id: areas.NORTH,
-        text: 'מחוז צפון'
+        text: 'מחוז צפון',
+        location: {
+          lat: 32.7996897, 
+          lng: 35.0517956
+        }
       }
     ],
     southPolygon: {
@@ -238,6 +321,9 @@ mounted: function() {
   });
 },
 computed: {
+    savedLocationsNames() {
+      return this.savedLocations.map(loc => loc.name);
+    },
     switchMapBtnText: function() {
       return this.showTopoMap ? 'למפה הרגילה' : 'למפה הטופוגרפית'
     },
@@ -265,13 +351,41 @@ computed: {
     }
 },
 methods: {
+  saveDetails() {
+    this.savedLocations.push({
+      name: this.newPlaceName,
+      location: {
+        lat: this.chosenLat,
+        lng: this.chosenLng
+      }
+    })
+        this.$alertify.success('המקום נשמר בהצלחה');
+    this.dialog = false;
+  },
+  saveFavorite() {
+    if(isNaN(this.chosenLat) || isNaN(this.chosenLng)) {
+      this.$alertify.error('צריך למלא נ.צ במספרים');
+    }
+    else {
+      this.dialog =  true;
+    }
+  },
+  gotoFavoritePlace(placeName) {
+    let place = this.savedLocations.find((loc) => {
+      return loc.name === placeName
+    })
+    this.dataMapCenter.MapCenterLat = place.location.lat;
+    this.dataMapCenter.MapCenterLng = place.location.lng;
+    this.zoom = 13
+    this.mapKey++;
+  },
   changeLatLng(event) {
     this.chosenLng = event.latlng.lng;
     this.chosenLat = event.latlng.lat;
   },
   gotoPoint() {
     if(isNaN(this.chosenLat) || isNaN(this.chosenLng)) {
-      alert('חובה למלא רק מספרים.')
+      this.$alertify.error('צריך למלא נ.צ במספרים');
     }
     else {
       this.dataMapCenter.MapCenterLat = this.chosenLat;
@@ -288,11 +402,20 @@ methods: {
   },
   selectPolygon(id){
     this.selectedPolygon === id ? this.selectedPolygon = undefined : this.selectedPolygon = id;
+    if(this.selectedPolygon !== undefined) {
+      let polygon = this.polygons.find((p) => {return p.id === id})
+      this.dataMapCenter.MapCenterLat = polygon.location.lat;
+      this.dataMapCenter.MapCenterLng = polygon.location.lng;
+      this.zoom = 10
+      this.mapKey++;
+    }
   },
   zoomUpdate(zoom) {
     this.currentZoom = zoom;
   },
   emitSensorClick(sensor) {
+    this.chosenLng = sensor.lng;
+    this.chosenLat = sensor.lat;
     EventBus.$emit('SENSOR_CLICK', sensor);
   },
   getLatLng(lat, lng) {

@@ -80,6 +80,7 @@
 
 <script>
   import axios from 'axios';
+  import Swal from 'sweetalert2';
   export default {
     props: {
       source: String,
@@ -98,16 +99,18 @@
     },
     methods: {
       login: function() {
-        axios.get(`https://11.1.1.39:8443/${this.militaryID}/${this.password}/${this.domain}`).then(response => 
-          {
-            if(response.data){
+        // axios.get(`https://11.1.1.39:8443/${this.militaryID}/${this.password}/${this.domain}`).then(response => 
+        //   {
+        //     if(response.data){
               this.$emit('finishLogin')
-            }
-             else{
-                 alert('לא נכון')
-             }
-          }
-        )}
+              this.$alertify.success(`שלום ${this.militaryID} התחברת בהצלחה!`);
+        //     }
+        //      else{
+        //          alert('לא נכון')
+        //      }
+        //   }
+        // )}
+      }
     }
   }
 </script>
